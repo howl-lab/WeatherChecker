@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./develop/style.css" />
+</head>
+
+<body class="container">
+
+    <!-- Header -->
+
+    <head class="row">
+        <h1 class="col-12 dashboard">
+            weather weather weather weather weather
+        </h1>
+    </head>
+
+    <!-- Body -->
+
+    <main class="row">
+        <section class="col-4 col-sm-12">
+            <p>
+                Find a city:
+                <input id="userInput" type="text" placeholder="enter city">
+                <button type="button" id="searchBtn" class="btn btn-danger">
+                    search
+                </button>
+
+            </p>
+            <hr>
+            <ul id="searchHistory">
+                Search History:
+            </ul>
+        </section>
+
+        <section id="current-weather">
+            <h2>Current weather</h2>
+            <section>
+                <h4>City: <span id="city-value"></span></h4>
+            </section>
+        </section>
+        <section class="col-8 col-sm-12">
+            <div id="cityName">
+                <h2 id="currentDate"></h2>
+                <hr>
+                <p id="forecast">
+                    5-Day Forecast
+                </p>
+            </div>
+
+        </section>
+
+
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="./develop/script.js"></script>
+</body>
+
+</html>
