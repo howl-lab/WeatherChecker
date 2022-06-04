@@ -25,42 +25,39 @@
     <!-- Body -->
 
     <main class="row">
-        <section class="col-4 col-sm-12">
+        <section class="col-4">
             <p>
-                Find a city:
+                Search city:
                 <input id="userInput" type="text" placeholder="enter city">
-                <button type="button" id="searchBtn" class="btn btn-danger">
-                    search
-                </button>
-
             </p>
+            <button type="button" id="searchBtn" class="btn btn-danger">
+                search
+            </button>
             <hr>
             <ul id="searchHistory">
                 Search History:
             </ul>
         </section>
 
-        <section id="current-weather">
+        <section class="col-8" id="current-weather">
             <h2>Current weather</h2>
             <section>
-                <h4>City: <span id="city-value"></span></h4>
+                <h4>City: <span id="city-value"></span></p>
+                    <p>Temp: <span id="temp-value"></span></p>
+                    <p>Wind: <span id="wind-value"></span></p>
+                    <p>Humidity: <span id="humidity-value"></span></p>
+                    <p>UV Index: <span id="uvi-value"></span></p>
             </section>
+            <hr>
+            <h4 id="forecast">
+                5-Day Forecast
+            </h4>
         </section>
-        <section class="col-8 col-sm-12">
-            <div id="cityName">
-                <h2 id="currentDate"></h2>
-                <hr>
-                <p id="forecast">
-                    5-Day Forecast
-                </p>
-            </div>
-
-        </section>
-
 
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./develop/script.js"></script>
 </body>
 
