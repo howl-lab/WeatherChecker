@@ -11,6 +11,8 @@ let humidityEl = $('#humidity-value');
 // uv index htmlEl
 let uviEl = $('#uvi-value');
 
+let fiveDayForecast = $('#five-day-forecast');
+
 //current day
 let currentDay = moment().format(' DD/MM/YYYY');//capital 24 hour
 
@@ -30,7 +32,7 @@ searchBtn.on('click', function (event) {
     // let cityInput = $('#userInput').val();
     // cities.push(cityInput);
     // //store city input in local storage
-    // localStorage.setItem('cities', JSONß.stringify(cities));
+    // localStorage.setItem('cities', JSON.stringify(cities));
     searchCityCurrentWeather(userInput);
 });
 
@@ -56,11 +58,12 @@ function capitalizeWords(str) {
 function renderHistory(onLoad, newCity) {
     let searchHistoryEl = $("#searchHistory");
     if (onLoad) {
-        for (let i = 0; i < searchHistory.length; i++) {
+        //limit searchHistory to 6 entries only
+        for (let i = 0; i < 6; i++) {
             let liEl = $("<li>");
             let searchBtn = $("<button>");
             searchBtn.text(capitalizeWords(searchHistory[i]));
-            searchBtn.addClass('search');
+            searchBtn.addClass('search btn btn-outline-dark btn-block');
             liEl.append(searchBtn);
             searchHistoryEl.append(liEl);
         };
@@ -68,7 +71,7 @@ function renderHistory(onLoad, newCity) {
         let liEl = $("<li>");
         let searchBtn = $("<button>");
         searchBtn.text(capitalizeWords(newCity));
-        searchBtn.addClass('search');
+        searchBtn.addClass('search btn btn-outline-dark btn-block');
         liEl.append(searchBtn);
         searchHistoryEl.append(liEl)
     };
@@ -102,34 +105,74 @@ function searchOneCallAPI(lat, lon, city) {
     })
         .then(function (response) {
             console.log('One Call API Response: ', response);
-            let uvIndex = uviEl.text(response.current.uvi)
+            uviEl.text(response.current.uvi)
+            let uvIndex = response.current.uvi
+            console.log(uvIndex)
             // let uvIndex = response.current.uvi;
             if (!searchHistory.includes(city)) {
                 searchHistory.push(city);
                 localStorage.setItem("history", JSON.stringify(searchHistory));
                 renderHistory(false, city);
             }
+
             // uv index color
-            // if (uvIndex < 3) {
-            //     uviEl.addClass("favorable");
-            // } else if (uviIndex >= 3 && uviIndex < 6) {
-            //     uviEl.addClass("moderate");
-            // } else if (uviIndex > 6) {
-            //     uviEl.addClass("severe");
-            // }
+            if (uvIndex < 3) {
+                uviEl.addClass("favorable");
+            } else if (uvIndex >= 3 && uvIndex < 6) {
+                uviEl.addClass("moderate");
+            } else if (uvIndex > 6) {
+                uviEl.addClass("severe");
+            }
 
             // creating 5 days forecast, append to dashboard
-            for (let i = 0; i < response.daily.length[4]; i++) {
-                let pEl = $("<p>");
+            for (let i = 0; i < 5; i++) {
+                // let pEl = $("<p>");
+                // pEl.text('something');
+                // fiveDayForecast.append(pEl);//append function for daily forecast
 
+                function createWeatherCard(obj) {
+                    // will create all of the html for the weather card
+                    // create the card div
+                    let forecastCardEl = $('<div>').addClass('forecast-card card');
+                    $("#five-day-forecast").append(forecastCardEl);
+                    // created the card header
+                    let dateDisplay = moment.unix(response.daily[i].dt).format(' MM/DD/YYYY');//capital 24 hour
+                    let forecastDateDisplay = $('<p>').text(dateDisplay).css({ "font-weight": "bold" });
+                    forecastCardEl.append(forecastDateDisplay);
+                    // create the card data
+                    let tempDisplay = response.daily[i].temp.day + ' °F';
+                    let forecastTemDisplay = $('<p>').text(tempDisplay);
+                    let windDisplay = response.daily[i].wind_speed + ' MPH';
+                    let forecastWindDisplay = $('<p>').text(windDisplay);
+                    let humidityDisplay = response.daily[i].humidity + ' %';
+                    let forecastHumidityDisplay = $('<p>').text(humidityDisplay);
+                    // append the header and data to card div
+                    forecastCardEl.append(forecastTemDisplay, forecastWindDisplay, forecastHumidityDisplay);
+                    // then append div to 5 day-forecast section
+
+
+
+                    console.log(dateDisplay);
+                    console.log(tempDisplay);
+                    console.log(windDisplay);
+                    console.log(humidityDisplay);
+
+                }
+
+                createWeatherCard(response.daily[i]);
             };
 
-        });
+        }
+        )
 };
+
+
 
 $(document).on('click', '.search', function (e) {
     console.log(e.target.textContent);
     let cityValue = e.target.textContent;
-
     searchCityCurrentWeather(cityValue);
-});
+
+    //add function to clear 5day history
+}
+);

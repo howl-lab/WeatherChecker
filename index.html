@@ -20,6 +20,7 @@
         <h1 class="col-12 dashboard">
             weather weather weather weather weather
         </h1>
+        <hr>
     </head>
 
     <!-- Body -->
@@ -30,7 +31,7 @@
                 Search city:
                 <input id="userInput" type="text" placeholder="enter city">
             </p>
-            <button type="button" id="searchBtn" class="btn btn-danger">
+            <button type="button" id="searchBtn" class="btn btn-dark btn-block"  >
                 search
             </button>
             <hr>
@@ -49,9 +50,12 @@
                     <p>UV Index: <span id="uvi-value"></span></p>
             </section>
             <hr>
-            <h4 id="forecast">
-                5-Day Forecast
-            </h4>
+
+            <h4>5-Day Forecast</h4>
+            <section id="five-day-forecast" class="d-flex flex-row flex-wrap mr-1">
+
+            </section>
+            
         </section>
 
     </main>
