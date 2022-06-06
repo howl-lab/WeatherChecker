@@ -4,64 +4,83 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="./develop/style.css" />
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+        crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css"
+        href="./develop/style.css" />
 </head>
 
 <body class="container">
 
     <!-- Header -->
 
-    <head class="row">
-        <h1 class="col-12 dashboard">
-            weather weather weather weather weather
-        </h1>
-        <hr>
-    </head>
+    <header>
+        <div class="col-12">
+            <h1 class="mb-0 text-center border-bottom border-dark mb-5 py-4"> weather weather weather
+                weather
+        </div>
+    </header>
 
     <!-- Body -->
 
     <main class="row">
         <section class="col-4">
-            <p>
+            <h6>
                 Search city:
-                <input id="userInput" type="text" placeholder="enter city">
-            </p>
-            <button type="button" id="searchBtn" class="btn btn-dark btn-block"  >
+                <input id="userInput" type="text"
+                    class="form-control"
+                    placeholder="enter city">
+            </h6>
+            <button type="button" id="searchBtn"
+                class="btn btn-dark">
                 search
             </button>
             <hr>
+            <h6> Search History:</h6>
             <ul id="searchHistory">
-                Search History:
             </ul>
         </section>
 
         <section class="col-8" id="current-weather">
-            <h2>Current weather</h2>
             <section>
-                <h4>City: <span id="city-value"></span></p>
-                    <p>Temp: <span id="temp-value"></span></p>
-                    <p>Wind: <span id="wind-value"></span></p>
-                    <p>Humidity: <span id="humidity-value"></span></p>
-                    <p>UV Index: <span id="uvi-value"></span></p>
+                <!-- <h4>City: <span id="city-value"></span></h4> -->
+                <h4 id="city-value">City Name 🌇</h4>
+                <p>Temp: <span id="temp-value"></span>
+                </p>
+                <p>Wind: <span id="wind-value"></span>
+                </p>
+                <p>Humidity: <span
+                        id="humidity-value"></span></p>
+                <p>UV Index: <span id="uvi-value"></span>
+                </p>
             </section>
             <hr>
 
-            <h4>5-Day Forecast</h4>
-            <section id="five-day-forecast" class="d-flex flex-row flex-wrap mr-1">
+            <h6>5-Day Forecast</h6>
+            <section
+                class="five-day-forecast d-flex flex-row flex-wrap">
+                <!-- <div class="card"> -->
+
+
+                <!-- </div> -->
 
             </section>
-            
+
         </section>
 
     </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="./develop/script.js"></script>
 </body>
 

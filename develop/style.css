@@ -3,6 +3,7 @@
     height: auto;
 }
 
+
 .favorable {
     color: green;
 }
@@ -17,18 +18,18 @@
 
 ul {
     list-style: none;
-   padding-left: 0;
+    padding-left: 0;
 }
 
 li {
     margin-bottom: 8px;
 }
 
-#five-day-forecast {
-    display: flex;
-    align-content: space-evenly;
-}
-
 .forecast-card {
     padding: 16px;
+    margin: 0px 8px 8px 0px;
+}
+
+h6 {
+    font-weight: bold;
 }

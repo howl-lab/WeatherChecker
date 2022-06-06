@@ -10,8 +10,8 @@ let windEl = $('#wind-value');
 let humidityEl = $('#humidity-value');
 // uv index htmlEl
 let uviEl = $('#uvi-value');
-
-let fiveDayForecast = $('#five-day-forecast');
+// five day forcast section
+let fiveDayForecast = $('.five-day-forecast');
 
 //current day
 let currentDay = moment().format(' DD/MM/YYYY');//capital 24 hour
@@ -27,12 +27,6 @@ let apiKey = "d47e097f5d363d7b0b0a962b12e789dc";
 searchBtn.on('click', function (event) {
     event.preventDefault();
     let userInput = $("#userInput").val().toLowerCase();
-    // console.log(searchBtn);
-    // // city input
-    // let cityInput = $('#userInput').val();
-    // cities.push(cityInput);
-    // //store city input in local storage
-    // localStorage.setItem('cities', JSON.stringify(cities));
     searchCityCurrentWeather(userInput);
 });
 
@@ -58,12 +52,12 @@ function capitalizeWords(str) {
 function renderHistory(onLoad, newCity) {
     let searchHistoryEl = $("#searchHistory");
     if (onLoad) {
-        //limit searchHistory to 6 entries only
-        for (let i = 0; i < 6; i++) {
+        //limit search history to 8 items
+        for (let i = 0; i < 8; i++) {
             let liEl = $("<li>");
             let searchBtn = $("<button>");
             searchBtn.text(capitalizeWords(searchHistory[i]));
-            searchBtn.addClass('search btn btn-outline-dark btn-block');
+            searchBtn.addClass('search btn btn-outline-dark');
             liEl.append(searchBtn);
             searchHistoryEl.append(liEl);
         };
@@ -71,12 +65,11 @@ function renderHistory(onLoad, newCity) {
         let liEl = $("<li>");
         let searchBtn = $("<button>");
         searchBtn.text(capitalizeWords(newCity));
-        searchBtn.addClass('search btn btn-outline-dark btn-block');
+        searchBtn.addClass('search btn btn-outline-dark');
         liEl.append(searchBtn);
         searchHistoryEl.append(liEl)
     };
 };
-
 
 function searchCityCurrentWeather(city) {
     const endpoint = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
@@ -85,15 +78,16 @@ function searchCityCurrentWeather(city) {
             return turnToJson.json();
         })
         .then(function (response) {
+            // let iconLink = `http://openweathermap.org/img/wn/${response.daily[i].weather[0].icon}@2x.png`;
+            // let foreImg = $("<img>").attr("src", iconLink).css({"max-width": "60px"});
+            // let iconLink = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`
             console.log(response);
             cityEl.text(response.name + currentDay)
             tempEl.text(response.main.temp + ' °F')
             windEl.text(response.wind.speed + ' MPH')
             humidityEl.text(response.main.humidity + ' %')
+
             searchOneCallAPI(response.coord.lat, response.coord.lon, city)
-            // let h4El = $("<h4>");
-            // h4El.text(response.name);
-            // currentWeather.append(h3El);
         });
 };
 
@@ -124,17 +118,16 @@ function searchOneCallAPI(lat, lon, city) {
                 uviEl.addClass("severe");
             }
 
+            // making sure it's clear
+            $(fiveDayForecast).empty();
+
             // creating 5 days forecast, append to dashboard
             for (let i = 0; i < 5; i++) {
-                // let pEl = $("<p>");
-                // pEl.text('something');
-                // fiveDayForecast.append(pEl);//append function for daily forecast
-
                 function createWeatherCard(obj) {
+                    let iconLink = `http://openweathermap.org/img/wn/${response.daily[i].weather[0].icon}@2x.png`;
+                    let foreImg = $("<img>").attr("src", iconLink).css({"max-width": "60px"});
                     // will create all of the html for the weather card
-                    // create the card div
                     let forecastCardEl = $('<div>').addClass('forecast-card card');
-                    $("#five-day-forecast").append(forecastCardEl);
                     // created the card header
                     let dateDisplay = moment.unix(response.daily[i].dt).format(' MM/DD/YYYY');//capital 24 hour
                     let forecastDateDisplay = $('<p>').text(dateDisplay).css({ "font-weight": "bold" });
@@ -146,33 +139,25 @@ function searchOneCallAPI(lat, lon, city) {
                     let forecastWindDisplay = $('<p>').text(windDisplay);
                     let humidityDisplay = response.daily[i].humidity + ' %';
                     let forecastHumidityDisplay = $('<p>').text(humidityDisplay);
-                    // append the header and data to card div
-                    forecastCardEl.append(forecastTemDisplay, forecastWindDisplay, forecastHumidityDisplay);
-                    // then append div to 5 day-forecast section
-
-
+                    // append the header and datas to forecastCardEl
+                    forecastCardEl.append(forecastTemDisplay, forecastWindDisplay, forecastHumidityDisplay, foreImg);
+                    // then append forecastCardEl to fiveDayForecast section
+                    fiveDayForecast.append(forecastCardEl);
 
                     console.log(dateDisplay);
                     console.log(tempDisplay);
                     console.log(windDisplay);
                     console.log(humidityDisplay);
-
                 }
 
                 createWeatherCard(response.daily[i]);
             };
-
-        }
-        )
+        });
 };
-
 
 
 $(document).on('click', '.search', function (e) {
     console.log(e.target.textContent);
     let cityValue = e.target.textContent;
     searchCityCurrentWeather(cityValue);
-
-    //add function to clear 5day history
-}
-);
+});
