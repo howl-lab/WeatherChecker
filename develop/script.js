@@ -4,17 +4,21 @@ let searchBtn = $('#searchBtn');
 let cityEl = $('#city-value');
 // temp htmlEl
 let tempEl = $('#temp-value');
+// date htmlEl
+let dateEl = $('#date-value');
 // wind htmlEl
 let windEl = $('#wind-value');
 // humidity htmlEl
 let humidityEl = $('#humidity-value');
 // uv index htmlEl
 let uviEl = $('#uvi-value');
-// five day forcast section
+// weather icon htmlEl
+let weatherIconEl = $('#weatherIcon');
+// five day forecast section
 let fiveDayForecast = $('.five-day-forecast');
 
 //current day
-let currentDay = moment().format(' DD/MM/YYYY');//capital 24 hour
+let currentDay = moment().format(' MM/DD/YYYY');//capital 24 hour
 
 // 5 day forecast
 let searchHistory = JSON.parse(localStorage.getItem('history')) || [];
@@ -53,10 +57,11 @@ function renderHistory(onLoad, newCity) {
     let searchHistoryEl = $("#searchHistory");
     if (onLoad) {
         //limit search history to 8 items
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 8 && i < searchHistory.length; i++) {
             let liEl = $("<li>");
             let searchBtn = $("<button>");
-            searchBtn.text(capitalizeWords(searchHistory[i]));
+            searchBtn.text(searchHistory[i]);
+            // searchBtn.text(capitalizeWords(searchHistory[i]));
             searchBtn.addClass('search btn btn-outline-dark');
             liEl.append(searchBtn);
             searchHistoryEl.append(liEl);
@@ -78,19 +83,24 @@ function searchCityCurrentWeather(city) {
             return turnToJson.json();
         })
         .then(function (response) {
-            // let iconLink = `http://openweathermap.org/img/wn/${response.daily[i].weather[0].icon}@2x.png`;
-            // let foreImg = $("<img>").attr("src", iconLink).css({"max-width": "60px"});
-            // let iconLink = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`
+            let iconUrl = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`;
+            // let foreImg = $("<img>").attr("src", iconUrl).css({"max-width": "60px"});
             console.log(response);
-            cityEl.text(response.name + currentDay)
+                        // Clearing out the weather icon section
+                        $(weatherIconEl).empty();
+            cityEl.text(response.name)
+            weatherIconEl.append($("<img>").attr("src", iconUrl).css({"max-width": "60px"}))
+            dateEl.text(currentDay)
             tempEl.text(response.main.temp + ' °F')
             windEl.text(response.wind.speed + ' MPH')
             humidityEl.text(response.main.humidity + ' %')
-
+            // plugging lat and lon to One Call API
             searchOneCallAPI(response.coord.lat, response.coord.lon, city)
         });
 };
 
+
+//API that takes lat and lon to output UV and other data
 function searchOneCallAPI(lat, lon, city) {
     let endpoint = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
     $.ajax({
@@ -118,14 +128,15 @@ function searchOneCallAPI(lat, lon, city) {
                 uviEl.addClass("severe");
             }
 
-            // making sure it's clear
+            // Clearing out the 5 day forecast section
             $(fiveDayForecast).empty();
 
-            // creating 5 days forecast, append to dashboard
-            for (let i = 0; i < 5; i++) {
+            // Create 5 days forecast and append to dashboard
+            for (let i = 1; i < 6; i++) {
                 function createWeatherCard(obj) {
+                    //icon for weather
                     let iconLink = `http://openweathermap.org/img/wn/${response.daily[i].weather[0].icon}@2x.png`;
-                    let foreImg = $("<img>").attr("src", iconLink).css({"max-width": "60px"});
+                    let foreImg = $("<img>").attr("src", iconLink).css({ "max-width": "60px" });
                     // will create all of the html for the weather card
                     let forecastCardEl = $('<div>').addClass('forecast-card card');
                     // created the card header
@@ -155,7 +166,7 @@ function searchOneCallAPI(lat, lon, city) {
         });
 };
 
-
+// Search history button for cities
 $(document).on('click', '.search', function (e) {
     console.log(e.target.textContent);
     let cityValue = e.target.textContent;
